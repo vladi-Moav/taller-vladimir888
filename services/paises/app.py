@@ -17,7 +17,7 @@ class ListaPaises(Resource):
             mis_paises.agregar(nuevo["id"], nuevo["nombre"], nuevo["continente"])
             return jsonify({"mensaje": "País agregado con éxito"})
         else:
-            return jsonify({"mensaje": "Id de país ya existe"})
+            return jsonify({"mensaje": "Id país ya existe"})
 
 
 class Pais(Resource):
@@ -36,7 +36,7 @@ class Pais(Resource):
             return jsonify({"mensaje": "País no existe"})
         else:
             mis_paises.modificar(id, nuevo["nombre"], nuevo["continente"])
-            return jsonify({"mensaje": "País modificado con éxito"})
+            return jsonify({"mensaje": "País modificado"})
 
     def delete(self, id):
         resultado = mis_paises.consultar(id)
@@ -44,7 +44,7 @@ class Pais(Resource):
             return jsonify({"mensaje": "País no existe"})
         else:
             mis_paises.eliminar(id)
-            return jsonify({"mensaje": "País eliminado con éxito!"})
+            return jsonify({"mensaje": "País eliminado"})
 
 
 api.add_resource(ListaPaises, "/paises")
