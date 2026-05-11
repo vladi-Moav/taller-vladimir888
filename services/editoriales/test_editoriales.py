@@ -27,8 +27,8 @@ class Test_editoriales:
     @pytest.mark.parametrize(
         ["nuevo_entrada", "esperado_entrada"],
         [
-            ({"id": "ED99", "nombre": "Nueva Editorial", "idPais": "CO"}, "Editorial agregada con éxito"),
-            ({"id": "ED01", "nombre": "Editorial Prueba", "idPais": "CO"}, "Id de editorial ya existe"),
+            ({"id": "1234", "nombre": "Nueva Editorial", "idPais": "CO"}, "Editorial agregada con éxito"),
+            ({"id": "4321", "nombre": "Editorial Prueba", "idPais": "CO"}, "Id de editorial ya existe"),
         ]
     )
     def test_agregar(self, nuevo_entrada, esperado_entrada):
@@ -38,7 +38,7 @@ class Test_editoriales:
 
     @pytest.mark.parametrize(
         ["id_entrada", "esperado_entrada"],
-        [("ED01", "Editorial encontrada"), ("XXXX", "Editorial no encontrada")]
+        [("1234", "Editorial encontrada"), ("5443", "Editorial no encontrada")]
     )
     def test_busqueda(self, id_entrada, esperado_entrada):
         calculado = requests.get(f"{self.url}/{id_entrada}")
@@ -46,14 +46,14 @@ class Test_editoriales:
         assert esperado_entrada in calculado.json()["mensaje"]
 
     def test_modifica1(self):
-        id = "ED01"
+        id = "1234"
         nuevo = {"nombre": "Editorial Modificada", "idPais": "CO"}
         calculado = requests.put(f"{self.url}/{id}", json=nuevo)
         assert calculado.status_code == 200
         assert "Editorial modificada con éxito" in calculado.json()["mensaje"]
 
     def test_modifica2(self):
-        id = "NOEXISTE"
+        id = "N0"
         nuevo = {"nombre": "Nadie", "idPais": "CO"}
         calculado = requests.put(f"{self.url}/{id}", json=nuevo)
         assert calculado.status_code == 200
@@ -61,7 +61,7 @@ class Test_editoriales:
 
     @pytest.mark.parametrize(
         ["id_entrada", "esperado_entrada"],
-        [("ED99", "Editorial eliminada con éxito!"), ("NOEXISTE", "Editorial no existe")]
+        [("1234", "Editorial eliminada con éxito!"), ("N0", "Editorial no existe")]
     )
     def test_elimina(self, id_entrada, esperado_entrada):
         calculado = requests.delete(f"{self.url}/{id_entrada}")
