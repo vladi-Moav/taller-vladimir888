@@ -14,7 +14,7 @@ class Test_usuarios:
         mi_db.commit()
 
     def teardown_class(self):
-        # Limpia la base de datos
+
         sql = f"DELETE FROM usuarios WHERE idUsuario='final881'"
         mi_cursor.execute(sql)
         mi_db.commit()
