@@ -11,7 +11,7 @@ class Test_paises:
         mi_db.commit()
 
     def teardown_class(self):
-        sql = "DELETE FROM paises WHERE idPais='A12'"
+        sql = "DELETE FROM paises WHERE idPais='TP'"
         mi_cursor.execute(sql)
         mi_db.commit()
 
@@ -24,8 +24,8 @@ class Test_paises:
     @pytest.mark.parametrize(
         ["nuevo_entrada", "esperado_entrada"],
         [
-            ({"id": "E21", "nombre": "Nuevo Pais", "continente": "Europa"}, "País agregado con éxito"),
-            ({"id": "A12", "nombre": "Pais de Prueba", "continente": "America"}, "Id de país ya existe"),
+            ({"id": "TQ", "nombre": "Nuevo Pais", "continente": "Europa"}, "País agregado con éxito"),
+            ({"id": "TP", "nombre": "Pais de Prueba", "continente": "America"}, "Id de país ya existe"),
         ]
     )
     def test_agregar(self, nuevo_entrada, esperado_entrada):
@@ -35,7 +35,7 @@ class Test_paises:
 
     @pytest.mark.parametrize(
         ["id_entrada", "esperado_entrada"],
-        [("A12", "País encontrado"), ("F31", "País no encontrado")]
+        [("TP", "País encontrado"), ("ZZ", "País no encontrado")]
     )
     def test_busqueda(self, id_entrada, esperado_entrada):
         calculado = requests.get(f"{self.url}/{id_entrada}")
@@ -43,14 +43,14 @@ class Test_paises:
         assert esperado_entrada in calculado.json()["mensaje"]
 
     def test_modifica1(self):
-        id = "A12"
+        id = "TP"
         nuevo = {"nombre": "Pais Modificado", "continente": "Asia"}
         calculado = requests.put(f"{self.url}/{id}", json=nuevo)
         assert calculado.status_code == 200
         assert "País modificado con éxito" in calculado.json()["mensaje"]
 
     def test_modifica2(self):
-        id = "AE"
+        id = "ZZ"
         nuevo = {"nombre": "Nadie", "continente": "Oceania"}
         calculado = requests.put(f"{self.url}/{id}", json=nuevo)
         assert calculado.status_code == 200
@@ -58,7 +58,7 @@ class Test_paises:
 
     @pytest.mark.parametrize(
         ["id_entrada", "esperado_entrada"],
-        [("E21", "País eliminado con éxito!"), ("F31", "País no existe")]
+        [("TQ", "País eliminado con éxito!"), ("ZZ", "País no existe")]
     )
     def test_elimina(self, id_entrada, esperado_entrada):
         calculado = requests.delete(f"{self.url}/{id_entrada}")
